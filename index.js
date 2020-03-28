@@ -5,17 +5,25 @@ const rl = readline.createInterface({
 });
 const todoList = [];
 rl.on("close", function() {
-	console.log("\nGood bye!");
+	console.log("\nSee you soon! 😄");
 	process.exit(0);
 });
 const prompt = function(message = '') {
 	rl.question(`${message}${getMenu()}`, command => {
-		const indexMath = /^c(\d+)$/g.exec(command);
-		if (indexMath) {
-			const index = parseInt(indexMath[1]);
+		const completedIndexMath = /^c(\d+)$/g.exec(command);
+		const deleteIndexMath = /^d(\d+)$/g.exec(command);
+		if (completedIndexMath) {
+			const index = parseInt(completedIndexMath[1]);
 			if (todoList[index]) {
 				todoList[index].done = true;
-				console.log(`Completed "${todoList[index].name}"\n`);
+				console.log(`\nCompleted "${todoList[index].name}"\n`);
+			}
+			prompt();
+		} else if (deleteIndexMath) {
+			const index = parseInt(deleteIndexMath[1]);
+			if (todoList[index]) {
+				const deletedItems = todoList.splice(index, 1);
+				console.log(`\nDeleted "${deletedItems[0].name}"\n`);
 			}
 			prompt();
 		} else {
